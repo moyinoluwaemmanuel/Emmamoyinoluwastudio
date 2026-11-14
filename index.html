@@ -630,6 +630,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
     <div class="wrap cp-grid">
       <div class="form-card">
         <form id="contactForm" novalidate>
+          <input type="text" name="_honey" id="f-honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
           <div class="row2">
             <div class="field"><label for="f-name">Your name <span>*</span></label><input id="f-name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" required></div>
             <div class="field"><label for="f-email">Email address <span>*</span></label><input id="f-email" name="email" type="email" autocomplete="email" placeholder="jane@yourbusiness.com" required></div>
@@ -661,14 +662,21 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
           <p class="form-error" id="formError" role="alert" hidden></p>
           <div class="form-actions">
             <button class="btn btn-primary" type="submit">Send message &rarr;</button>
-            <span class="form-note">No spam, ever. I only use your details to reply.</span>
+            <span class="form-note">Messages go straight to my inbox. I only use your details to reply.</span>
           </div>
         </form>
 
+        <div class="sent" id="okPanel" hidden>
+          <div class="sent-icon">✓</div>
+          <h2>Message sent. Thank you, <span id="okName">there</span>!</h2>
+          <p>I've received your enquiry and will reply to <b id="okEmail"></b> within 0–4 hours on weekdays. If you shared your website, your free review is on its way too.</p>
+          <div class="email-row"><a class="btn btn-ghost" href="#home">Back to home</a><button class="btn btn-ghost" id="againBtn" type="button">Send another message</button></div>
+        </div>
+
         <div class="sent" id="sentPanel" hidden>
           <div class="sent-icon">✓</div>
-          <h2>Thanks, <span id="sentName">there</span>. One last step.</h2>
-          <p>Your message is ready. Open it in your email app and press send, or copy it and email it to <b>emmanuelmoyinoluwa71@gmail.com</b>.</p>
+          <h2>Sorry <span id="sentName">there</span>, the message didn't go through.</h2>
+          <p>Please send it by email instead. Open it in your email app and press send, or copy it and email it to <b>emmanuelmoyinoluwa71@gmail.com</b>.</p>
           <pre class="sent-msg" id="sentMsg"></pre>
           <div class="email-row">
             <a class="btn btn-primary" id="mailtoBtn" href="#">Open in email app</a>
@@ -746,7 +754,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
   var copyBtn=document.getElementById('copyBtn'),emailEl=document.getElementById('email');
   copyBtn.addEventListener('click',function(){copyText(emailEl.textContent.trim(),copyBtn,emailEl)});
 
-  var form=document.getElementById('contactForm'),err=document.getElementById('formError'),panel=document.getElementById('sentPanel');
+  var form=document.getElementById('contactForm'),err=document.getElementById('formError'),panel=document.getElementById('sentPanel'),okPanel=document.getElementById('okPanel');
   var TO='emmanuelmoyinoluwa71@gmail.com';
   form.addEventListener('submit',function(e){
     e.preventDefault();
@@ -769,11 +777,24 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
     document.getElementById('sentName').textContent=f.name.value.trim().split(' ')[0];
     document.getElementById('sentMsg').textContent='Subject: '+subject+'\n\n'+body;
     document.getElementById('mailtoBtn').href='mailto:'+TO+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
-    form.hidden=true; panel.hidden=false; panel.scrollIntoView({block:'center'});
+    var submitBtn=form.querySelector('button[type=submit]');
+    if(f._honey.value){return;}
+    submitBtn.disabled=true; submitBtn.textContent='Sending…';
+    var payload={_subject:subject,_template:'table',_captcha:'false',name:f.name.value.trim(),email:f.email.value.trim(),business:f.business.value.trim()||'-',website:f.website.value.trim()||'-',services:services.join(', ')||'-',platform:f.platform.value||'-',budget:f.budget.value||'-',timeline:f.timeline.value||'-',message:f.message.value.trim()};
+    function done(ok){
+      submitBtn.disabled=false; submitBtn.textContent='Send message →';
+      form.hidden=true;
+      if(ok){document.getElementById('okName').textContent=f.name.value.trim().split(' ')[0];document.getElementById('okEmail').textContent=f.email.value.trim();okPanel.hidden=false;okPanel.scrollIntoView({block:'center'});form.reset();}
+      else{panel.hidden=false;panel.scrollIntoView({block:'center'});}
+    }
+    fetch('https://formsubmit.co/ajax/'+TO,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)})
+      .then(function(r){return r.json().catch(function(){return {}}).then(function(j){done(r.ok&&String(j.success)!=='false')})})
+      .catch(function(){done(false)});
   });
   var cm=document.getElementById('copyMsgBtn');
   cm.addEventListener('click',function(){var m=document.getElementById('sentMsg');copyText(m.textContent,cm,m)});
   document.getElementById('editBtn').addEventListener('click',function(){panel.hidden=true;form.hidden=false;});
+  document.getElementById('againBtn').addEventListener('click',function(){okPanel.hidden=true;form.hidden=false;});
 })();
 </script>
 
