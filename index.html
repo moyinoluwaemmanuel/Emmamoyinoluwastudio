@@ -303,6 +303,60 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
 .faq summary::after{content:"+";color:var(--accent);font-size:1.3rem;line-height:1}
 .faq details[open] summary::after{content:"–"}
 .faq details p{color:var(--muted);padding-bottom:16px}
+
+/* marquee */
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.marquee-band{background:var(--band);color:var(--band-fg);padding-block:22px;overflow:hidden;display:grid;gap:10px;position:relative}
+.marquee{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.mq-track{display:flex;width:max-content;animation:mq 38s linear infinite}
+.mq-group{display:flex;align-items:center;flex:none}
+.mq-main span{font-family:var(--f-display);font-weight:800;font-size:clamp(1.6rem,4vw,2.8rem);letter-spacing:-.02em;padding-inline:22px;white-space:nowrap}
+.mq-main i{color:var(--amber);font-style:normal;font-size:1.3rem}
+.mq-main span:nth-of-type(3n+2){-webkit-text-stroke:1.5px var(--band-fg);color:transparent}
+.mq-sub .mq-track{animation-duration:46s;animation-direction:reverse}
+.mq-sub span{font-family:var(--f-mono);font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--band-muted);padding-inline:18px;white-space:nowrap}
+.mq-sub i{color:var(--accent);font-style:normal;font-size:.7rem}
+.marquee-band:hover .mq-track{animation-play-state:paused}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* AI section */
+.ai-section{background:radial-gradient(ellipse 60% 50% at 85% 0%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 70%),var(--paper)}
+.new-pill{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;background:var(--amber);color:#14110A;font-size:.66rem;letter-spacing:.08em;vertical-align:1px}
+.ai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width:940px){.ai-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){.ai-grid{grid-template-columns:1fr}}
+.ai-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:28px 26px;display:grid;gap:12px;align-content:start;min-width:0;overflow:hidden;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.ai-card::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:conic-gradient(from var(--ang,0deg),transparent 0 70%,var(--accent) 80%,var(--amber) 90%,transparent);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .3s}
+.ai-card:hover{transform:translateY(-4px);box-shadow:0 24px 40px -28px rgba(14,26,36,.45)}
+.ai-card:hover::before{opacity:1;animation:spin 3s linear infinite}
+@property --ang{syntax:"<angle>";inherits:false;initial-value:0deg}
+@keyframes spin{to{--ang:360deg}}
+.ai-ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;color:var(--accent-ink);background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 55%,var(--amber)))}
+.ai-ico svg{width:22px;height:22px}
+.ai-card p{color:var(--muted);font-size:.95rem}
+.ai-card ul{margin:4px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.ai-card li{font-size:.76rem;font-weight:600;padding:4px 9px;border-radius:7px;background:var(--accent-soft);color:var(--accent)}
+.ai-cta{margin-top:32px;display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center;justify-content:space-between;padding:22px 26px;border-radius:var(--r);border:1px dashed color-mix(in srgb,var(--accent) 45%,var(--line));background:var(--surface)}
+.ai-cta p{max-width:56ch;font-weight:600}
+
+/* motion */
+@keyframes rise{from{opacity:0;translate:0 22px}to{opacity:1;translate:none}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pop{from{opacity:0;scale:.92;translate:0 12px}to{opacity:1;scale:1;translate:none}}
+.hero-copy>*{animation:rise .8s cubic-bezier(.2,.7,.2,1) both}
+.hero-copy>*:nth-child(2){animation-delay:.08s}
+.hero-copy>*:nth-child(3){animation-delay:.16s}
+.hero-copy>*:nth-child(4){animation-delay:.24s}
+.hero-stage .laptop{animation:rise 1s .2s cubic-bezier(.2,.7,.2,1) both}
+.hero-stage .phone{animation:pop .9s .45s cubic-bezier(.2,.7,.2,1) both, floaty 6s 1.4s ease-in-out infinite}
+.hero-stage .float-card{animation:pop .9s .6s cubic-bezier(.2,.7,.2,1) both, floaty 7s 2s ease-in-out infinite}
+.hero h1 em::after{transform-origin:left;animation:underline 1s .6s cubic-bezier(.2,.7,.2,1) both}
+@keyframes underline{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@supports (animation-timeline: view()){
+  .reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+}
+.mark,.logo{transition:transform .3s ease}
+.brand:hover .logo{transform:rotate(-6deg) scale(1.06)}
 </style>
 </head>
 <body>
@@ -315,6 +369,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
     <ul>
       <li><a href="#home" data-nav="home">Home</a></li>
       <li><a href="#services">Services</a></li>
+      <li><a href="#ai-services">AI</a></li>
       <li><a href="#work">Work</a></li>
       <li><a href="#reviews">Reviews</a></li>
       <li><a href="#contact" data-nav="contact">Contact</a></li>
@@ -374,6 +429,12 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
     </div>
   </div>
 
+  <div class="marquee-band">
+    <p class="sr-only">Services: website design, redesign, AI chatbots, SEO, AI search optimization, online stores, AI automation, booking websites, AI content and landing pages.</p>
+    <div class="marquee mq-main" aria-hidden="true"><div class="mq-track"><div class="mq-group"><span>Website Design</span><i aria-hidden="true">✦</i><span>Website Redesign</span><i aria-hidden="true">✦</i><span>AI Chatbots</span><i aria-hidden="true">✦</i><span>SEO &amp; Local SEO</span><i aria-hidden="true">✦</i><span>AI Search (AEO/GEO)</span><i aria-hidden="true">✦</i><span>Online Stores</span><i aria-hidden="true">✦</i><span>AI Automation</span><i aria-hidden="true">✦</i><span>Booking Websites</span><i aria-hidden="true">✦</i><span>AI Content</span><i aria-hidden="true">✦</i><span>Landing Pages</span><i aria-hidden="true">✦</i></div><div class="mq-group"><span>Website Design</span><i aria-hidden="true">✦</i><span>Website Redesign</span><i aria-hidden="true">✦</i><span>AI Chatbots</span><i aria-hidden="true">✦</i><span>SEO &amp; Local SEO</span><i aria-hidden="true">✦</i><span>AI Search (AEO/GEO)</span><i aria-hidden="true">✦</i><span>Online Stores</span><i aria-hidden="true">✦</i><span>AI Automation</span><i aria-hidden="true">✦</i><span>Booking Websites</span><i aria-hidden="true">✦</i><span>AI Content</span><i aria-hidden="true">✦</i><span>Landing Pages</span><i aria-hidden="true">✦</i></div></div></div>
+    <div class="marquee mq-sub" aria-hidden="true"><div class="mq-track"><div class="mq-group"><span>WordPress</span><i aria-hidden="true">✦</i><span>Wix</span><i aria-hidden="true">✦</i><span>Squarespace</span><i aria-hidden="true">✦</i><span>Shopify</span><i aria-hidden="true">✦</i><span>Webador</span><i aria-hidden="true">✦</i><span>GoDaddy</span><i aria-hidden="true">✦</i><span>Wix Studio</span><i aria-hidden="true">✦</i><span>ChatGPT</span><i aria-hidden="true">✦</i><span>Google AI Overviews</span><i aria-hidden="true">✦</i></div><div class="mq-group"><span>WordPress</span><i aria-hidden="true">✦</i><span>Wix</span><i aria-hidden="true">✦</i><span>Squarespace</span><i aria-hidden="true">✦</i><span>Shopify</span><i aria-hidden="true">✦</i><span>Webador</span><i aria-hidden="true">✦</i><span>GoDaddy</span><i aria-hidden="true">✦</i><span>Wix Studio</span><i aria-hidden="true">✦</i><span>ChatGPT</span><i aria-hidden="true">✦</i><span>Google AI Overviews</span><i aria-hidden="true">✦</i></div></div></div>
+  </div>
+
   <section id="services">
     <div class="wrap">
       <div class="sec-head">
@@ -382,42 +443,94 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
         <p class="lede">Everything a small business website needs to look credible, work on every device and turn visitors into enquiries.</p>
       </div>
       <div class="svc-grid">
-        <div class="svc">
+        <div class="svc reveal">
           <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h5"/></svg></div>
           <h3>Website design</h3>
           <p>Custom, mobile-friendly websites built around what your customers need to see first, with a clear call or book button on every page.</p>
           <ul><li>Business sites</li><li>Landing pages</li><li>One-page sites</li></ul>
         </div>
-        <div class="svc">
+        <div class="svc reveal">
           <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg></div>
           <h3>Website redesign</h3>
           <p>Turn a dated template site into a modern one with better layout, navigation, visual hierarchy and real photos, without losing your content.</p>
           <ul><li>Layout &amp; UX</li><li>Mobile fixes</li><li>Rebrand refresh</li></ul>
         </div>
-        <div class="svc">
+        <div class="svc reveal">
           <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg></div>
           <h3>SEO &amp; local SEO</h3>
           <p>On-page and technical SEO, meta titles and descriptions, alt text, headings, Google Search Console and Google Business Profile.</p>
           <ul><li>On-page SEO</li><li>Local SEO</li><li>Page speed</li></ul>
         </div>
-        <div class="svc">
+        <div class="svc reveal">
           <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></div>
           <h3>AI search optimization</h3>
           <p>AEO and GEO so ChatGPT, Google AI Overviews and other AI tools understand your business and recommend it to customers.</p>
           <ul><li>AEO</li><li>GEO</li><li>Structured content</li></ul>
         </div>
-        <div class="svc">
+        <div class="svc reveal">
           <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></div>
           <h3>Bookings &amp; ecommerce</h3>
           <p>Online stores, booking pages, contact forms and blogs that work smoothly, so customers can buy or book without calling to ask how.</p>
           <ul><li>Online stores</li><li>Booking systems</li><li>Blogs</li></ul>
         </div>
-        <div class="svc">
+        <div class="svc reveal">
           <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg></div>
           <h3>Migration, fixes &amp; care</h3>
           <p>Platform migrations, Figma or mockup to live site, bug fixes, half-finished site completion and ongoing maintenance and updates.</p>
           <ul><li>Migrations</li><li>Figma to site</li><li>Maintenance</li></ul>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ai-services" class="ai-section">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">AI services <span class="new-pill">New</span></span>
+        <h2>Put AI to work on your website</h2>
+        <p class="lede">Practical AI that saves you time and wins more customers: chatbots that answer at 2am, automations that follow up for you, and content built to be found by AI search.</p>
+      </div>
+      <div class="ai-grid">
+        <div class="ai-card reveal">
+          <div class="ai-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a7 7 0 0 1 7 7c0 3.9-3.1 7-7 7H8l-4 3v-6.5A7 7 0 0 1 12 3Z"/><path d="M9 10h.01M12 10h.01M15 10h.01"/></svg></div>
+          <h3>AI chatbots &amp; assistants</h3>
+          <p>A 24/7 assistant on your website that answers customer questions, captures leads and books appointments, trained on your own services, prices and FAQs.</p>
+          <ul><li>Website chatbots</li><li>Lead capture</li><li>Booking assistant</li></ul>
+        </div>
+        <div class="ai-card reveal">
+          <div class="ai-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14Z"/><path d="m20 20-4-4M8.5 11h5M11 8.5v5"/></svg></div>
+          <h3>AI search optimization</h3>
+          <p>Structure your site so ChatGPT, Gemini, Perplexity and Google AI Overviews understand your business and recommend it when customers ask.</p>
+          <ul><li>AEO &amp; GEO</li><li>Schema markup</li><li>FAQ content</li></ul>
+        </div>
+        <div class="ai-card reveal">
+          <div class="ai-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h7"/><path d="M17 15l2 2 3-4"/></svg></div>
+          <h3>AI workflow automation</h3>
+          <p>Connect your forms, bookings, email and CRM so enquiries get instant replies, follow-ups go out on time and nothing slips through the cracks.</p>
+          <ul><li>Auto-replies</li><li>Follow-ups</li><li>Zapier &amp; Make</li></ul>
+        </div>
+        <div class="ai-card reveal">
+          <div class="ai-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h10l4 4v12H5z"/><path d="M8 12h8M8 16h5M14 4v4h4"/></svg></div>
+          <h3>AI content &amp; copywriting</h3>
+          <p>SEO-friendly page copy, blog posts and product descriptions drafted with AI, then edited by me so they sound like your business, not a robot.</p>
+          <ul><li>Website copy</li><li>Blog posts</li><li>Product descriptions</li></ul>
+        </div>
+        <div class="ai-card reveal">
+          <div class="ai-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="m4 16 5-5 4 4 3-3 4 4M15 9h.01"/></svg></div>
+          <h3>AI visuals &amp; branding</h3>
+          <p>Custom AI-generated images, illustrations and graphics for websites and social media when stock photos feel generic.</p>
+          <ul><li>Hero images</li><li>Social graphics</li><li>Brand visuals</li></ul>
+        </div>
+        <div class="ai-card reveal">
+          <div class="ai-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></div>
+          <h3>AI-powered insights</h3>
+          <p>Plain-English reports on your traffic, search rankings and enquiries, with clear next steps to turn more visitors into customers.</p>
+          <ul><li>Analytics reports</li><li>SEO audits</li><li>Conversion tips</li></ul>
+        </div>
+      </div>
+      <div class="ai-cta">
+        <p>Not sure where AI fits in your business? I'll suggest one quick win in your free website review.</p>
+        <a class="btn btn-primary" href="#contact">Ask about AI services &rarr;</a>
       </div>
     </div>
   </section>
@@ -430,12 +543,12 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
         <p class="lede">Already on a website builder? I'll work inside it. Starting fresh? I'll recommend the platform that fits your budget and how you want to run the site.</p>
       </div>
       <div class="plat-grid">
-        <div class="plat"><div class="plat-name">Wix <span class="tag">Certified</span></div><p>Wix and Wix Studio design, redesign, Velo functionality, Bookings, Stores, Blog and SEO Wiz.</p></div>
-        <div class="plat"><div class="plat-name">WordPress</div><p>Page additions, landing pages, theme customization and on-page SEO for WordPress sites.</p></div>
-        <div class="plat"><div class="plat-name">Squarespace</div><p>Clean, editorial Squarespace sites, redesigns and migrations to or from other platforms.</p></div>
-        <div class="plat"><div class="plat-name">Shopify</div><p>Store setup, product pages, theme customization and conversion-focused storefronts.</p></div>
-        <div class="plat"><div class="plat-name">Webador</div><p>Simple, affordable small business sites that are easy for owners to update themselves.</p></div>
-        <div class="plat"><div class="plat-name">GoDaddy</div><p>GoDaddy Website Builder sites, updates, and domain and DNS help when you launch.</p></div>
+        <div class="plat reveal"><div class="plat-name">Wix <span class="tag">Certified</span></div><p>Wix and Wix Studio design, redesign, Velo functionality, Bookings, Stores, Blog and SEO Wiz.</p></div>
+        <div class="plat reveal"><div class="plat-name">WordPress</div><p>Page additions, landing pages, theme customization and on-page SEO for WordPress sites.</p></div>
+        <div class="plat reveal"><div class="plat-name">Squarespace</div><p>Clean, editorial Squarespace sites, redesigns and migrations to or from other platforms.</p></div>
+        <div class="plat reveal"><div class="plat-name">Shopify</div><p>Store setup, product pages, theme customization and conversion-focused storefronts.</p></div>
+        <div class="plat reveal"><div class="plat-name">Webador</div><p>Simple, affordable small business sites that are easy for owners to update themselves.</p></div>
+        <div class="plat reveal"><div class="plat-name">GoDaddy</div><p>GoDaddy Website Builder sites, updates, and domain and DNS help when you launch.</p></div>
       </div>
     </div>
   </section>
@@ -458,32 +571,32 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
         </div>
       </a>
       <div class="work-grid">
-        <a class="work" href="https://chateaupartners.com" target="_blank" rel="noopener">
+        <a class="work reveal" href="https://chateaupartners.com" target="_blank" rel="noopener">
           <div class="browser"><div class="bar"><div class="dots"><span></span><span></span><span></span></div><div class="url">chateaupartners.com</div></div>
             <div class="shot"><img src="img/chateau.webp" alt="Chateau Partners homepage" loading="lazy"></div></div>
           <div class="work-meta"><span class="cat">Advisory firm &middot; Full design &amp; build</span><h3>Chateau Partners</h3><p>Complete website design and build for a strategic advisory firm serving founder-led companies.</p><span class="visit">Visit live site &#8599;</span></div>
         </a>
-        <a class="work" href="https://sederslawncare.com" target="_blank" rel="noopener">
+        <a class="work reveal" href="https://sederslawncare.com" target="_blank" rel="noopener">
           <div class="browser"><div class="bar"><div class="dots"><span></span><span></span><span></span></div><div class="url">sederslawncare.com</div></div>
             <div class="shot"><img src="img/seders.webp" alt="Seders Lawn Care homepage" loading="lazy"></div></div>
           <div class="work-meta"><span class="cat">Lawn care &middot; Wix</span><h3>Seders Lawn Care</h3><p>Local service website with Google reviews, clear services and a free quote button up front.</p><span class="visit">Visit live site &#8599;</span></div>
         </a>
-        <a class="work" href="https://penderconservancy.org" target="_blank" rel="noopener">
+        <a class="work reveal" href="https://penderconservancy.org" target="_blank" rel="noopener">
           <div class="browser"><div class="bar"><div class="dots"><span></span><span></span><span></span></div><div class="url">penderconservancy.org</div></div>
             <div class="shot"><img src="img/pender.webp" alt="Pender Islands Conservancy homepage" loading="lazy"></div></div>
           <div class="work-meta"><span class="cat">Nonprofit land trust</span><h3>Pender Islands Conservancy</h3><p>Conservation website presenting the mission, events, blog and a clear donate path.</p><span class="visit">Visit live site &#8599;</span></div>
         </a>
-        <a class="work" href="https://jumpstartbyjill.com" target="_blank" rel="noopener">
+        <a class="work reveal" href="https://jumpstartbyjill.com" target="_blank" rel="noopener">
           <div class="browser"><div class="bar"><div class="dots"><span></span><span></span><span></span></div><div class="url">jumpstartbyjill.com</div></div>
             <div class="shot"><img src="img/jumpstart.webp" alt="Jumpstart by Jill homepage" loading="lazy"></div></div>
           <div class="work-meta"><span class="cat">Health &amp; wellness &middot; Wix</span><h3>Jumpstart by Jill</h3><p>Website launch for an inclusive fitness and wellness brand. Rated 5.0 by the client.</p><span class="visit">Visit live site &#8599;</span></div>
         </a>
-        <a class="work" href="https://maidschicago.com" target="_blank" rel="noopener">
+        <a class="work reveal" href="https://maidschicago.com" target="_blank" rel="noopener">
           <div class="browser"><div class="bar"><div class="dots"><span></span><span></span><span></span></div><div class="url">maidschicago.com</div></div>
             <div class="shot"><img src="img/maids.webp" alt="E&amp;K Cleaning Service homepage" loading="lazy"></div></div>
           <div class="work-meta"><span class="cat">Cleaning services</span><h3>E&amp;K Cleaning Service</h3><p>Residential and commercial cleaning website with booking always one tap away.</p><span class="visit">Visit live site &#8599;</span></div>
         </a>
-        <a class="work" href="https://kay-ys.com" target="_blank" rel="noopener">
+        <a class="work reveal" href="https://kay-ys.com" target="_blank" rel="noopener">
           <div class="browser"><div class="bar"><div class="dots"><span></span><span></span><span></span></div><div class="url">kay-ys.com</div></div>
             <div class="shot"><img src="img/kayys.webp" alt="KAYYS homepage" loading="lazy"></div></div>
           <div class="work-meta"><span class="cat">Home care</span><h3>KAYYS</h3><p>Clear, accessible website for a CDPAP home care facilitator and the families it serves.</p><span class="visit">Visit live site &#8599;</span></div>
@@ -510,24 +623,24 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
           <div class="who">Raphael O.<small>Business website design &middot; Mar 2026</small></div>
         </div>
         <div class="rev-col">
-          <div class="rev">
+          <div class="rev reveal">
             <div class="stars">★★★★★</div>
             <blockquote>"She understood what needed to be improved and made thoughtful suggestions instead of simply doing exactly what I asked."</blockquote>
             <div class="who">Upwork client<small>Wix redesign &amp; optimization &middot; Sep 2026</small></div>
           </div>
-          <div class="rev">
+          <div class="rev reveal">
             <div class="stars">★★★★★</div>
             <blockquote>"Work was done on time. The quality was great. I got what I needed. I trust in her integrity."</blockquote>
             <div class="who">Upwork client<small>International relocation company &middot; Aug 2026</small></div>
           </div>
         </div>
         <div class="rev-col">
-          <div class="rev">
+          <div class="rev reveal">
             <div class="stars">★★★★★</div>
             <blockquote>"She did an excellent job redesigning and optimizing my pet care website. She improved the website's layout, mobile responsiveness, and overall user experience."</blockquote>
             <div class="who">Upwork client<small>Pet care redesign &middot; Oct 2026</small></div>
           </div>
-          <div class="rev">
+          <div class="rev reveal">
             <div class="stars">★★★★★</div>
             <blockquote>"She read the brief carefully at the outset and correctly identified the harder parts."</blockquote>
             <div class="who">Upwork client<small>Firm website rebuild &middot; Aug 2026</small></div>
@@ -552,10 +665,10 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
         <h2>From first message to launch</h2>
       </div>
       <div class="steps">
-        <div class="step"><h3>Free review</h3><p>Send your website link. Within 24 hours you get the 3 changes that will bring in more calls and bookings.</p></div>
-        <div class="step"><h3>Plan</h3><p>We agree on pages, content, platform, timeline and a fixed price before any work starts.</p></div>
-        <div class="step"><h3>Design &amp; build</h3><p>I build the site with regular check-ins, testing on phones, tablets and desktops as I go.</p></div>
-        <div class="step"><h3>Launch &amp; handover</h3><p>SEO set up, site launched, and a simple walkthrough so you can edit it yourself.</p></div>
+        <div class="step reveal"><h3>Free review</h3><p>Send your website link. Within 24 hours you get the 3 changes that will bring in more calls and bookings.</p></div>
+        <div class="step reveal"><h3>Plan</h3><p>We agree on pages, content, platform, timeline and a fixed price before any work starts.</p></div>
+        <div class="step reveal"><h3>Design &amp; build</h3><p>I build the site with regular check-ins, testing on phones, tablets and desktops as I go.</p></div>
+        <div class="step reveal"><h3>Launch &amp; handover</h3><p>SEO set up, site launched, and a simple walkthrough so you can edit it yourself.</p></div>
       </div>
     </div>
   </section>
@@ -648,6 +761,9 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);
               <label class="chk"><input type="checkbox" id="s-ai" name="service" value="AI search optimization"><span>AI search (AEO)</span></label>
               <label class="chk"><input type="checkbox" id="s-shop" name="service" value="Online store / bookings"><span>Store or bookings</span></label>
               <label class="chk"><input type="checkbox" id="s-fix" name="service" value="Fixes / maintenance / migration"><span>Fixes &amp; migration</span></label>
+              <label class="chk"><input type="checkbox" id="s-aibot" name="service" value="AI chatbot / assistant"><span>AI chatbot</span></label>
+              <label class="chk"><input type="checkbox" id="s-aiauto" name="service" value="AI automation / AI content"><span>AI automation</span></label>
+              <label class="chk"><input type="checkbox" id="s-other" name="service" value="Something else"><span>Something else</span></label>
             </div>
           </fieldset>
           <div class="row3">
